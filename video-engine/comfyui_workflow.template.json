@@ -1,0 +1,10 @@
+{
+  "__README__": "Export an API-format workflow from ComfyUI and replace the placeholder values below with the matching node inputs. The API server injects the canonical character prompt and seed.",
+  "__PLACEHOLDERS__": {
+    "prompt": "{{PROMPT}}",
+    "seed": "{{SEED}}",
+    "character_id": "{{CHARACTER_ID}}",
+    "reference_image": "{{REFERENCE_IMAGE}}"
+  },
+  "__WORKFLOW__": {}
+}
