@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "rules": {
+    "identity_locked": true,
+    "allow_unrequested_costume_change": false,
+    "allow_unrequested_color_change": false,
+    "preserve_signature_items": true
+  },
+  "characters": [
+    {
+      "id": "hanys",
+      "name": "Hanys",
+      "role": "gornik",
+      "visual": {
+        "fur": "green",
+        "hair": "green, messy",
+        "eyes": "brown",
+        "outfit": "green work overalls with patches, brown work boots",
+        "signature_items": ["pickaxe"]
+      },
+      "reference_image": "https://cdn.shopify.com/s/files/1/1019/1903/1622/files/bebok-hanys-reference.jpg?v=1787822873",
+      "continuity_prompt": "Keep Hanys identical to the reference: same green fur, face, eyes, hairstyle, green patched work overalls, belt and brown work boots. Keep his pickaxe unless the scene explicitly changes it."
+    },
+    {
+      "id": "hopla",
+      "name": "Hopla",
+      "role": "zwiadowczyni",
+      "visual": {
+        "fur": "light cream/pale pink",
+        "hair": "bright pink, spiky",
+        "eyes": "blue",
+        "outfit": "pink work overalls, miner helmet, brown backpack, boots",
+        "signature_items": ["backpack", "miner helmet"]
+      },
+      "reference_image": "https://cdn.shopify.com/s/files/1/1019/1903/1622/files/bebok-hopla-reference.jpg?v=1787822881",
+      "continuity_prompt": "Keep Hopla identical to the reference: same pale fur, pink hair, blue eyes, pink overalls, miner helmet and backpack."
+    },
+    {
+      "id": "fachura",
+      "name": "Fachura",
+      "role": "gornik",
+      "visual": {
+        "fur": "blue-gray",
+        "hair": "electric blue, curly",
+        "eyes": "bright blue",
+        "outfit": "dark blue work shirt, blue denim overalls, heavy work boots, miner helmet",
+        "signature_items": ["two glowing blue pickaxes"]
+      },
+      "reference_image": "https://cdn.shopify.com/s/files/1/1019/1903/1622/files/bebok-fachura-reference.jpg?v=1787822863",
+      "continuity_prompt": "Keep Fachura identical to the reference: same blue-gray fur, electric blue curly hair, large blue eyes, miner helmet with lamp, dark blue shirt, denim overalls, belt and heavy boots. Preserve the two glowing blue pickaxes."
+    },
+    {
+      "id": "podciep",
+      "name": "Podciep",
+      "role": "latarnik",
+      "visual": {
+        "fur": "gray-lavender",
+        "hair": "messy purple",
+        "eyes": "amber",
+        "outfit": "dark purple work clothes, scarf, leather harness, belt and heavy boots",
+        "signature_items": ["old glowing lantern"]
+      },
+      "reference_image": "https://cdn.shopify.com/s/files/1/1019/1903/1622/files/bebok-podciep-reference.jpg?v=1787822890",
+      "continuity_prompt": "Keep Podciep identical to the reference: same gray-lavender fur, messy purple hair, amber eyes, purple clothes, scarf, leather harness and heavy boots. Preserve his old glowing lantern."
+    }
+  ]
+}
