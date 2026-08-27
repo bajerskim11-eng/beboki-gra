@@ -1,0 +1,11 @@
+import React,{Suspense,useEffect,useRef,useState} from 'react';
+import {createRoot} from 'react-dom/client';
+import {Canvas,useFrame} from '@react-three/fiber';
+import {Environment,OrbitControls,useGLTF} from '@react-three/drei';
+import * as THREE from 'three';
+import './styles.css';
+
+function Hanys({reacting}){const g=useGLTF('/models/hanys.glb'); const ref=useRef(); const t=useRef(0); useFrame((_,d)=>{t.current+=d;if(ref.current){ref.current.position.y=Math.sin(t.current*1.5)*0.025+(reacting?0.25:0);ref.current.rotation.y=Math.sin(t.current*.35)*.06+(reacting?Math.sin(t.current*8)*.08:0);}}); return <primitive ref={ref} object={g.scene} scale={1.8}/>}
+useGLTF.preload('/models/hanys.glb');
+function App(){const [reacting,setReacting]=useState(false); const [status,setStatus]=useState('Hanyś czeka...'); const timer=useRef(); const react=()=>{setReacting(true);setStatus('Hanyś skacze!');clearTimeout(timer.current);timer.current=setTimeout(()=>{setReacting(false);setStatus('Hanyś czeka...')},800)}; return <main><div className="top"><b>HANYŚ</b><span>❤️ 100</span></div><section className="stage"><Suspense fallback={<div className="loading">Ładuję Hanysia 3D…</div>}><Canvas camera={{position:[0,1.1,4.2],fov:35}} dpr={[1,2]}><ambientLight intensity={1.8}/><directionalLight position={[3,5,4]} intensity={3}/><Environment preset="city"/><Hanys reacting={reacting}/><OrbitControls enablePan={false} minDistance={2.5} maxDistance={5} target={[0,.9,0]}/></Canvas></Suspense><button className="character-hit" aria-label="Dotknij Hanysia" onClick={react}/></section><div className="status">{status}</div><nav><button onClick={react}>👋<small>Zaczep</small></button><button onClick={()=>setStatus('🎤 Mikrofon — następny etap')}>🎤<small>Mów</small></button><button onClick={()=>setStatus('🧠 AI — następny etap')}>🧠<small>Porozmawiaj</small></button><button onClick={()=>setStatus('🎁 Prezenty — następny etap')}>🎁<small>Prezent</small></button></nav></main>}
+createRoot(document.getElementById('root')).render(<App/>);
