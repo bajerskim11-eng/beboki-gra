@@ -1,0 +1,25 @@
+{
+  "name": "beboki-ai-avatar",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@huggingface/transformers": "^3.7.2",
+    "@pixiv/three-vrm": "^3.4.4",
+    "@react-three/drei": "^10.7.6",
+    "@react-three/fiber": "^9.3.0",
+    "@mlc-ai/web-llm": "^0.2.80",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "three": "^0.179.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^5.0.2",
+    "vite": "^7.1.3"
+  }
+}
