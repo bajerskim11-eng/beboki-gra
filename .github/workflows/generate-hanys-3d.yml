@@ -2,15 +2,12 @@ name: Generate Hanys 3D Model
 
 on:
   push:
-    paths:
-      - 'tools/hanys-3d/**'
-      - '.github/workflows/generate-hanys-3d.yml'
   workflow_dispatch:
 
 jobs:
   generate:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 90
     permissions:
       contents: write
     steps:
@@ -29,7 +26,7 @@ jobs:
 
       - name: Install TripoSR
         run: |
-          python -m pip install --upgrade pip setuptools
+          python -m pip install --upgrade pip setuptools wheel
           git clone --depth 1 https://github.com/VAST-AI-Research/TripoSR.git tools/hanys-3d/TripoSR
           python -m pip install -r tools/hanys-3d/requirements.txt
           python -m pip install -r tools/hanys-3d/TripoSR/requirements.txt
@@ -38,10 +35,10 @@ jobs:
         run: |
           curl -L --fail https://raw.githubusercontent.com/bajerskim11-eng/beboki-katowice-mis/main/public/beboki/hanys.jpeg -o tools/hanys-3d/hanys-reference.jpeg
 
-      - name: Generate GLB
+      - name: Generate GLB on CPU fallback
         working-directory: tools/hanys-3d
         run: |
-          python TripoSR/run.py hanys-reference.jpeg --output-dir output
+          python TripoSR/run.py hanys-reference.jpeg --device cpu --output-dir output --model-save-format glb --mc-resolution 128
           mkdir -p ../../public/models
           cp output/0/mesh.glb ../../public/models/hanys.glb
 
