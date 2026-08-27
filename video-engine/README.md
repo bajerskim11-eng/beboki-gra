@@ -6,7 +6,7 @@ Pierwszy backend generowania scen Beboków przez ComfyUI + Wan 2.1 I2V.
 
 Shopify -> Beboki Video API -> ComfyUI -> Wan 2.1 I2V -> MP4
 
-Postać jest wybierana z `characters.json`. Backend pobiera jej kanoniczną referencję z Shopify CDN, wysyła ją do ComfyUI przez `/upload/image`, a następnie uruchamia natywny workflow Wan przez `/prompt`.
+Postać jest wybierana z `characters.json`. Backend pobiera jej kanoniczną referencję z Shopify CDN, wysyła ją do ComfyUI przez `/upload/image`, a następnie uruchamia workflow Wan przez `/prompt`.
 
 ## Aktualne postacie
 
@@ -17,17 +17,36 @@ Postać jest wybierana z `characters.json`. Backend pobiera jej kanoniczną refe
 
 ## Model
 
-Pierwszy silnik używa `wan2.1_i2v_480p_14B_fp16.safetensors`.
+Pierwszy silnik używa `wan2.1_i2v_480p_14B_fp16.safetensors`. Oficjalna dokumentacja ComfyUI dla Wan 2.1 I2V wskazuje ten model wraz z VAE, text encoderem i CLIP Vision jako elementy workflow I2V. citeturn0search0
 
 Wymagane pliki:
 
 - `ComfyUI/models/diffusion_models/wan2.1_i2v_480p_14B_fp16.safetensors`
 - `ComfyUI/models/text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors`
 - `ComfyUI/models/vae/wan_2.1_vae.safetensors`
+- `ComfyUI/models/clip_vision/clip_vision_h.safetensors`
 
-ComfyUI ma natywne workflow dla Wan 2.1 I2V. Model 14B daje nam jakość potrzebną do pierwszych testów postaci; później dodamy lżejszy wariant dla tańszego renderowania.
+## Uruchomienie GPU
 
-## Uruchomienie
+Na maszynie z NVIDIA GPU uruchom:
+
+```bash
+cd video-engine
+bash scripts/setup_comfyui_wan21.sh
+```
+
+Skrypt pobiera ComfyUI i wymagane zasoby Wan z repozytorium `Comfy-Org/Wan_2.1_ComfyUI_repackaged`. Nie przechowujemy ciężkich modeli w GitHubie.
+
+Można też użyć przygotowanego obrazu CUDA:
+
+```bash
+cd video-engine
+docker compose -f docker-compose.gpu.yml up --build
+```
+
+Backend API będzie na porcie `8080`, a ComfyUI na `8188`.
+
+## Backend
 
 ```bash
 cd video-engine
@@ -67,20 +86,22 @@ curl http://127.0.0.1:8080/jobs/<PROMPT_ID>
 
 ## Ciągłość postaci
 
-`characters.json` jest źródłem prawdy dla wyglądu. Backend automatycznie dodaje do promptu blokadę tożsamości oraz negatywny prompt przeciw zmianie twarzy, futra, fryzury, ubioru i przedmiotów charakterystycznych.
+`characters.json` jest źródłem prawdy dla wyglądu. Backend automatycznie dodaje blokadę tożsamości oraz negatywny prompt przeciw zmianie twarzy, futra, fryzury, ubioru i przedmiotów charakterystycznych. fileciteturn47file0
 
 To jest pierwszy poziom continuity. Następny etap to referencyjne adaptery/LoRA i pamięć między ujęciami, a potem generowanie całego odcinka z planem scen.
 
-## GPU
+## Ważne
 
-Model i ComfyUI są open-source, ale samo generowanie wymaga odpowiedniego GPU. Backend jest przygotowany tak, aby ComfyUI działało na osobnym serwerze GPU; Mac nie musi wykonywać generowania lokalnie.
+Wan 2.1 jest projektem open-source, ale generowanie 14B wymaga mocnego GPU. Nie będziemy próbować renderować tego na Twoim Macu. Mac będzie mógł obsługiwać Shopify i panel sterowania, a GPU będzie osobnym workerem.
 
 ## Następny etap
 
-Po uruchomieniu pierwszego renderu dokładamy:
+1. Uruchamiamy pierwszy render Fachury.
+2. Dodajemy VACE/reference-to-video dla mocniejszej kontroli wyglądu.
+3. Dodajemy Character LoRA/adapter dla każdego Beboka.
+4. Dodajemy pamięć stanu między ujęciami.
+5. Story Engine dzieli historię na sceny.
+6. Pipeline automatycznie montuje odcinek.
+7. Podpinamy `create episode` do Shopify.
 
-1. Character LoRA/adapter dla każdego Beboka.
-2. pamięć stanu między ujęciami,
-3. Story Engine dzielący historię na sceny,
-4. automatyczny montaż odcinka,
-5. endpoint Shopify `create episode`.
+ComfyUI ma również oficjalny workflow Wan VACE Reference-to-Video, który jest szczególnie interesujący dla naszego celu zachowania wyglądu postaci. citeturn0search7
