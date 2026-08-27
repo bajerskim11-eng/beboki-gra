@@ -1,0 +1,11 @@
+torch
+transformers
+huggingface-hub
+numpy
+Pillow
+omegaconf
+trimesh
+rembg
+imageio
+imageio-ffmpeg
+# Upstream TripoSR source is installed from GitHub during setup.
