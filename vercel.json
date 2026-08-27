@@ -1,6 +1,13 @@
 {
   "cleanUrls": true,
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
   "rewrites": [
     { "source": "/avatar", "destination": "/avatar.html" }
-  ]
+  ],
+  "functions": {
+    "api/*.js": {
+      "runtime": "nodejs22.x"
+    }
+  }
 }
