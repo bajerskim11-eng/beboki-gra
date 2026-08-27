@@ -3,6 +3,7 @@
   "buildCommand": null,
   "outputDirectory": ".",
   "rewrites": [
-    { "source": "/avatar", "destination": "/avatar.html" }
+    { "source": "/avatar", "destination": "/avatar.html" },
+    { "source": "/bebok", "destination": "/bebok.html" }
   ]
 }
