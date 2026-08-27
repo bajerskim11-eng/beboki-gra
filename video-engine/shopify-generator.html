@@ -1,0 +1,53 @@
+<section id="bebok-video-generator" style="max-width:720px;margin:40px auto;padding:24px;border:1px solid #ddd;border-radius:16px;font-family:system-ui">
+  <h2>🎬 Stwórz historię Beboka</h2>
+  <label>Postać</label>
+  <select id="bebok-character" style="display:block;width:100%;padding:10px;margin:8px 0 16px"></select>
+  <label>Pomysł na scenę</label>
+  <textarea id="bebok-prompt" rows="5" style="display:block;width:100%;padding:10px;margin:8px 0 16px" placeholder="Fachura znajduje magiczną skrzynię pod Spodkiem..."></textarea>
+  <button id="bebok-generate" style="padding:12px 18px;border:0;border-radius:10px;cursor:pointer">Generuj ujęcie</button>
+  <pre id="bebok-status" style="white-space:pre-wrap;margin-top:16px"></pre>
+</section>
+
+<script>
+(async () => {
+  // Replace with the public HTTPS URL of the deployed Beboki API.
+  const API = window.BEBOKI_VIDEO_API || 'https://YOUR-BEBOKI-API.example.com';
+  const select = document.querySelector('#bebok-character');
+  const prompt = document.querySelector('#bebok-prompt');
+  const button = document.querySelector('#bebok-generate');
+  const status = document.querySelector('#bebok-status');
+
+  try {
+    const response = await fetch(`${API}/characters`);
+    const data = await response.json();
+    for (const character of data.characters) {
+      const option = document.createElement('option');
+      option.value = character.id;
+      option.textContent = character.name;
+      select.appendChild(option);
+    }
+  } catch (error) {
+    status.textContent = 'Nie można połączyć z silnikiem video. Sprawdź adres API.';
+  }
+
+  button.addEventListener('click', async () => {
+    if (prompt.value.trim().length < 3) return;
+    button.disabled = true;
+    status.textContent = '⏳ Wysyłam scenę do generatora...';
+    try {
+      const response = await fetch(`${API}/generate`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({character_id: select.value, scene_prompt: prompt.value.trim()})
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.detail || 'Generation failed');
+      status.textContent = `✅ Job uruchomiony.\nBebok: ${data.character_id}\nSeed: ${data.seed}\nPrompt ID: ${data.prompt_id}`;
+    } catch (error) {
+      status.textContent = `❌ ${error.message}`;
+    } finally {
+      button.disabled = false;
+    }
+  });
+})();
+</script>
