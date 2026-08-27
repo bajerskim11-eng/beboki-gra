@@ -1,0 +1,38 @@
+services:
+  beboki-video-api:
+    build: .
+    ports:
+      - "8080:8000"
+    environment:
+      COMFYUI_URL: http://comfyui:8188
+      CORS_ORIGINS: ${CORS_ORIGINS:-*}
+    depends_on:
+      - comfyui
+
+  comfyui:
+    image: python:3.12-slim
+    working_dir: /workspace
+    ports:
+      - "8188:8188"
+    volumes:
+      - ./comfyui:/workspace/ComfyUI
+      - comfy-models:/workspace/ComfyUI/models
+    command: >-
+      bash -lc "
+      if [ ! -f /workspace/ComfyUI/main.py ]; then
+        apt-get update && apt-get install -y --no-install-recommends git && rm -rf /var/lib/apt/lists/*;
+        git clone https://github.com/comfyanonymous/ComfyUI.git /workspace/ComfyUI;
+      fi;
+      python -m pip install -r /workspace/ComfyUI/requirements.txt;
+      python /workspace/ComfyUI/main.py --listen 0.0.0.0 --port 8188
+      "
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+volumes:
+  comfy-models:
