@@ -14,9 +14,9 @@ from pydantic import BaseModel, Field
 ROOT = Path(__file__).resolve().parent
 COMFYUI_URL = os.getenv("COMFYUI_URL", "http://127.0.0.1:8188").rstrip("/")
 CHARACTERS_FILE = ROOT / "characters.json"
-WORKFLOW_FILE = ROOT / "comfyui_workflow.template.json"
+WORKFLOW_FILE = ROOT / "workflows" / "wan2.1_i2v_api.json"
 
-app = FastAPI(title="Beboki Video Engine", version="0.1.0")
+app = FastAPI(title="Beboki Video Engine", version="0.2.0")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[x.strip() for x in os.getenv("CORS_ORIGINS", "*").split(",")],
@@ -38,24 +38,62 @@ def comfy_request(path: str, payload: bytes | None = None, method: str = "GET") 
         headers={"Content-Type": "application/json"},
     )
     try:
-        with urllib.request.urlopen(req, timeout=30) as response:
-            return json.loads(response.read().decode("utf-8"))
+        with urllib.request.urlopen(req, timeout=60) as response:
+            body = response.read().decode("utf-8")
+            return json.loads(body) if body else {}
     except urllib.error.URLError as exc:
         raise HTTPException(status_code=502, detail=f"ComfyUI unavailable: {exc}") from exc
+
+
+def download_reference(url: str) -> tuple[str, bytes]:
+    try:
+        with urllib.request.urlopen(url, timeout=30) as response:
+            return response.headers.get_content_type(), response.read()
+    except urllib.error.URLError as exc:
+        raise HTTPException(status_code=502, detail=f"Reference image unavailable: {exc}") from exc
+
+
+def upload_image(filename: str, image_bytes: bytes, content_type: str) -> str:
+    boundary = f"----BebokiBoundary{uuid.uuid4().hex}"
+    parts = [
+        f"--{boundary}\r\n".encode(),
+        f'Content-Disposition: form-data; name="image"; filename="{filename}"\r\n'.encode(),
+        f"Content-Type: {content_type}\r\n\r\n".encode(),
+        image_bytes,
+        f"\r\n--{boundary}--\r\n".encode(),
+    ]
+    body = b"".join(parts)
+    req = urllib.request.Request(
+        f"{COMFYUI_URL}/upload/image",
+        data=body,
+        method="POST",
+        headers={"Content-Type": f"multipart/form-data; boundary={boundary}"},
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=60) as response:
+            result = json.loads(response.read().decode("utf-8"))
+            if result.get("subfolder"):
+                return f"{result['subfolder']}/{result['name']}"
+            return result["name"]
+    except (urllib.error.URLError, KeyError, json.JSONDecodeError) as exc:
+        raise HTTPException(status_code=502, detail=f"Could not upload reference image to ComfyUI: {exc}") from exc
 
 
 class GenerateRequest(BaseModel):
     character_id: str
     scene_prompt: str = Field(min_length=3, max_length=4000)
     seed: int | None = None
+    width: int = Field(default=512, ge=256, le=1280)
+    height: int = Field(default=512, ge=256, le=1280)
+    frames: int = Field(default=33, ge=17, le=81)
     workflow: dict[str, Any] | None = None
 
 
 @app.get("/health")
 def health() -> dict[str, Any]:
     try:
-        comfy_request("/system_stats")
-        return {"ok": True, "comfyui": "online"}
+        stats = comfy_request("/system_stats")
+        return {"ok": True, "comfyui": "online", "system": stats.get("system", {}), "devices": stats.get("devices", [])}
     except HTTPException:
         return {"ok": True, "comfyui": "offline"}
 
@@ -72,36 +110,63 @@ def generate(request: GenerateRequest) -> dict[str, Any]:
     if not character:
         raise HTTPException(status_code=404, detail="Unknown Bebok character")
 
-    seed = request.seed if request.seed is not None else random.randint(1, 2**63 - 1)
+    seed = request.seed if request.seed is not None else random.randint(1, 2**32 - 1)
+    job_id = uuid.uuid4().hex[:12]
     prompt = (
         f"{character['continuity_prompt']}\n\n"
         f"Scene: {request.scene_prompt}\n"
-        "Keep the canonical character identity unchanged. Cinematic 3D animated film quality."
+        "Keep the canonical character identity unchanged. Keep the same proportions, face, fur, hair, clothing, accessories and signature item. "
+        "Cinematic high-quality 3D animated film, natural motion, coherent lighting, stable character design."
+    )
+    negative = (
+        "different character, changed face, changed fur color, changed hairstyle, changed clothes, missing signature item, "
+        "extra limbs, extra fingers, deformed hands, duplicate character, flicker, jitter, warped face, text, subtitles, watermark"
     )
 
     workflow = request.workflow
     if workflow is None:
         if not WORKFLOW_FILE.exists():
-            raise HTTPException(status_code=500, detail="Workflow template missing")
+            raise HTTPException(status_code=500, detail="Wan workflow missing")
         workflow = json.loads(WORKFLOW_FILE.read_text(encoding="utf-8"))
+    else:
+        workflow = json.loads(json.dumps(workflow))
+
+    content_type, image_bytes = download_reference(character["reference_image"])
+    safe_filename = f"bebok_{character['id']}_{job_id}.png"
+    comfy_image = upload_image(safe_filename, image_bytes, content_type)
 
     raw = json.dumps(workflow)
-    raw = raw.replace("{{PROMPT}}", json.dumps(prompt)[1:-1])
-    raw = raw.replace("{{SEED}}", str(seed))
-    raw = raw.replace("{{CHARACTER_ID}}", character["id"])
-    raw = raw.replace("{{REFERENCE_IMAGE}}", character["reference_image"])
+    replacements = {
+        "{{PROMPT}}": prompt,
+        "{{NEGATIVE_PROMPT}}": negative,
+        "{{SEED}}": str(seed),
+        "{{CHARACTER_ID}}": character["id"],
+        "{{JOB_ID}}": job_id,
+        "{{INPUT_IMAGE}}": comfy_image,
+    }
+    for key, value in replacements.items():
+        raw = raw.replace(key, value)
     workflow = json.loads(raw)
+
+    workflow["13"]["inputs"]["width"] = request.width
+    workflow["13"]["inputs"]["height"] = request.height
+    workflow["13"]["inputs"]["length"] = request.frames
+    workflow["18"]["inputs"]["filename_prefix"] = f"beboki/{character['id']}/{job_id}"
 
     client_id = str(uuid.uuid4())
     payload = json.dumps({"prompt": workflow, "client_id": client_id}).encode("utf-8")
     result = comfy_request("/prompt", payload, method="POST")
+    if result.get("error"):
+        raise HTTPException(status_code=400, detail=result)
 
     return {
         "ok": True,
+        "job_id": job_id,
         "prompt_id": result.get("prompt_id"),
         "client_id": client_id,
         "character_id": character["id"],
         "seed": seed,
+        "generation": {"width": request.width, "height": request.height, "frames": request.frames},
         "continuity": {
             "identity_locked": registry["rules"]["identity_locked"],
             "signature_items_preserved": registry["rules"]["preserve_signature_items"],
