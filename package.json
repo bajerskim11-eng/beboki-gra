@@ -1,8 +1,11 @@
 {
   "name": "beboki-ai-avatar",
   "private": true,
-  "version": "0.1.1",
+  "version": "0.1.2",
   "type": "module",
+  "engines": {
+    "node": "20.x"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build && cp avatar.html dist/avatar.html",
@@ -20,7 +23,6 @@
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^5.0.2",
-    "vite": "^7.1.3",
-    "@vitejs/plugin-react": "^5.0.2"
+    "vite": "^7.1.3"
   }
 }
