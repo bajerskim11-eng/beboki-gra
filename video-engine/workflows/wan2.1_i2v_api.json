@@ -1,0 +1,101 @@
+{
+  "37": {
+    "inputs": {
+      "unet_name": "wan2.1_i2v_480p_14B_fp16.safetensors",
+      "weight_dtype": "default"
+    },
+    "class_type": "UNETLoader"
+  },
+  "38": {
+    "inputs": {
+      "clip_name": "umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+      "type": "wan",
+      "device": "default"
+    },
+    "class_type": "CLIPLoader"
+  },
+  "39": {
+    "inputs": {
+      "vae_name": "wan_2.1_vae.safetensors"
+    },
+    "class_type": "VAELoader"
+  },
+  "6": {
+    "inputs": {
+      "text": "{{PROMPT}}",
+      "clip": ["38", 0]
+    },
+    "class_type": "CLIPTextEncode"
+  },
+  "7": {
+    "inputs": {
+      "text": "{{NEGATIVE_PROMPT}}",
+      "clip": ["38", 0]
+    },
+    "class_type": "CLIPTextEncode"
+  },
+  "54": {
+    "inputs": {
+      "shift": 8,
+      "model": ["37", 0]
+    },
+    "class_type": "ModelSamplingSD3"
+  },
+  "11": {
+    "inputs": {
+      "image": "{{INPUT_IMAGE}}"
+    },
+    "class_type": "LoadImage"
+  },
+  "13": {
+    "inputs": {
+      "width": 512,
+      "height": 512,
+      "length": 33,
+      "batch_size": 1,
+      "positive": ["6", 0],
+      "negative": ["7", 0],
+      "vae": ["39", 0],
+      "start_image": ["11", 0]
+    },
+    "class_type": "WanImageToVideo"
+  },
+  "14": {
+    "inputs": {
+      "seed": "{{SEED}}",
+      "steps": 20,
+      "cfg": 6,
+      "sampler_name": "uni_pc",
+      "scheduler": "simple",
+      "denoise": 1,
+      "model": ["54", 0],
+      "positive": ["13", 0],
+      "negative": ["13", 1],
+      "latent_image": ["13", 2]
+    },
+    "class_type": "KSampler"
+  },
+  "16": {
+    "inputs": {
+      "samples": ["14", 0],
+      "vae": ["39", 0]
+    },
+    "class_type": "VAEDecode"
+  },
+  "17": {
+    "inputs": {
+      "fps": 16,
+      "images": ["16", 0]
+    },
+    "class_type": "CreateVideo"
+  },
+  "18": {
+    "inputs": {
+      "filename_prefix": "beboki/{{CHARACTER_ID}}/{{JOB_ID}}",
+      "format": "auto",
+      "codec": "auto",
+      "video": ["17", 0]
+    },
+    "class_type": "SaveVideo"
+  }
+}
