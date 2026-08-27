@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Stwórz swojego Beboka</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 20% 0%,#3a214c,#0d0b13 55%);color:#fff;font-family:Inter,system-ui,sans-serif}main{max-width:1100px;margin:auto;padding:28px}.hero{text-align:center;padding:22px 0 28px}.eyebrow{letter-spacing:.16em;color:#ffd34e;font-weight:800;font-size:12px}.hero h1{font-size:clamp(36px,7vw,72px);margin:8px 0;background:linear-gradient(90deg,#ffd34e,#ff8c69,#c58cff);-webkit-background-clip:text;color:transparent}.hero p{color:#c7c0d2;font-size:18px}.grid{display:grid;grid-template-columns:1fr 1.1fr;gap:18px}.card{background:rgba(19,15,28,.88);border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:22px;box-shadow:0 20px 70px rgba(0,0,0,.28);backdrop-filter:blur(14px)}label{display:block;font-weight:800;margin:14px 0 7px}select,input[type=file]{width:100%;padding:13px;border-radius:13px;border:1px solid #3b3248;background:#171321;color:#fff}button{width:100%;border:0;border-radius:15px;padding:15px;margin-top:16px;font-weight:900;font-size:16px;cursor:pointer;background:linear-gradient(90deg,#ffd34e,#ff9a66);color:#17100a}.preview{min-height:440px;border-radius:18px;background:#0a0810;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}.preview img{max-width:100%;max-height:520px;display:none}.preview .hint{color:#777083;text-align:center;padding:30px}.status{margin-top:12px;padding:12px;border-radius:12px;background:#181320;color:#bcb4c9;font-size:14px}.share{display:flex;gap:10px}.share button{flex:1}.download{background:#262032;color:#fff}.note{font-size:12px;color:#8f879a;line-height:1.5;margin-top:14px}@media(max-width:800px){.grid{grid-template-columns:1fr}.preview{min-height:320px}}
+</style>
+</head>
+<body>
+<main>
+<section class="hero"><div class="eyebrow">KATOWICE • BEBOKI</div><h1>STWÓRZ SWOJEGO BEBOKA</h1><p>Wrzuć zdjęcie. My zamienimy Cię w bohatera naszego świata.</p></section>
+<div class="grid">
+<section class="card">
+<h2>1. Wybierz zdjęcie</h2>
+<input id="photo" type="file" accept="image/png,image/jpeg,image/webp">
+<label>Charakter</label><select id="personality"><option>figlarny</option><option>cwany</option><option>odważny</option><option>tajemniczy</option><option>przyjazny</option><option>psotny</option></select>
+<label>Rola</label><select id="role"><option>łowca beboków</option><option>górnik</option><option>strażnik Katowic</option><option>magik</option><option>kucharz</option><option>superbohater</option><option>król Beboków</option></select>
+<button id="go">✨ STWÓRZ MOJEGO BEBOKA</button>
+<div id="status" class="status">Silnik: FLUX.2 Klein 9B + Bebok workflow na publicznym GPU Hugging Face.</div>
+<p class="note">Zdjęcie jest wysyłane do zewnętrznego modelu AI w celu wygenerowania grafiki. Nie zapisujemy go w tym interfejsie.</p>
+</section>
+<section class="card"><h2>2. Twój Bebok</h2><div class="preview"><div class="hint" id="hint">Tutaj pojawi się Twój Bebok 👹</div><img id="result"></div><div class="share" id="actions" style="display:none"><button class="download" id="download">⬇ ZAPISZ PNG</button><button id="share">📤 UDOSTĘPNIJ</button></div></section>
+</div>
+</main>
+<script type="module">
+import { Client, handle_file } from 'https://cdn.jsdelivr.net/npm/@gradio/client/+esm';
+const SPACE='laruss5/Flux2-Klein-Face-Swap';
+const photo=document.getElementById('photo'),go=document.getElementById('go'),status=document.getElementById('status'),result=document.getElementById('result'),hint=document.getElementById('hint'),actions=document.getElementById('actions');
+let outputUrl='';
+function fileToDataURL(file){return new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(file)})}
+async function renderBase(){
+  // A lightweight Bebok-like base is generated as a canvas: the model receives the user's face as reference and this character body as target.
+  const c=document.createElement('canvas');c.width=768;c.height=768;const x=c.getContext('2d');
+  const g=x.createRadialGradient(384,260,50,384,384,500);g.addColorStop(0,'#6d476f');g.addColorStop(1,'#17101d');x.fillStyle=g;x.fillRect(0,0,768,768);
+  x.fillStyle='#2f7d57';x.beginPath();x.ellipse(384,430,190,235,0,0,Math.PI*2);x.fill();
+  x.fillStyle='#3d9c6d';x.beginPath();x.arc(384,260,150,0,Math.PI*2);x.fill();
+  x.fillStyle='#fff';x.beginPath();x.arc(330,245,38,0,Math.PI*2);x.arc(438,245,38,0,Math.PI*2);x.fill();
+  x.fillStyle='#1b1320';x.beginPath();x.arc(330,245,14,0,Math.PI*2);x.arc(438,245,14,0,Math.PI*2);x.fill();
+  x.strokeStyle='#17101d';x.lineWidth=12;x.beginPath();x.arc(384,300,65,.15,Math.PI-.15);x.stroke();
+  x.fillStyle='#f0b34b';x.fillRect(220,160,328,35);x.beginPath();x.arc(384,150,115,Math.PI,0);x.fill();
+  x.fillStyle='#1b1320';x.fillRect(250,480,70,190);x.fillRect(448,480,70,190);x.fill();
+  x.fillStyle='#ffd34e';x.font='900 42px system-ui';x.textAlign='center';x.fillText('BEBOK',384,720);
+  return await new Promise(r=>c.toBlob(r,'image/png'));
+}
+go.onclick=async()=>{
+ try{
+  const file=photo.files[0];if(!file) throw new Error('Najpierw wybierz zdjęcie.');
+  go.disabled=true;go.textContent='⏳ TWORZĘ BEBOKA...';status.textContent='Łączę z darmowym GPU Hugging Face...';
+  const client=await Client.connect(SPACE);
+  const base=await renderBase();
+  const extra=`Create an original cute Katowice Bebok sticker. Personality: ${document.getElementById('personality').value}. Role: ${document.getElementById('role').value}. Make the final character clearly look like a playful Polish/Silesian Bebok, full body, polished 3D animated game character, sticker-ready, clean silhouette, no text.`;
+  const job=client.submit('/face_swap',[await handle_file(file),await handle_file(base),extra,0,true,768,768,4,1]);
+  let final=null;for await(const event of job){if(event.type==='status'){status.textContent=event.stage==='error'?'Błąd generatora':('AI pracuje… '+(event.queue_size!=null?`kolejka: ${event.queue_size}`:''))}if(event.type==='data'){final=event.data?.[0]?.[1]||event.data?.[0]||event.data}}
+  if(!final) throw new Error('Model nie zwrócił obrazu.');
+  outputUrl=typeof final==='string'?final:final.url;
+  if(!outputUrl) throw new Error('Nie udało się odczytać wyniku.');
+  result.src=outputUrl;result.style.display='block';hint.style.display='none';actions.style.display='flex';status.textContent='Gotowe! Twój Bebok czeka. 👹';
+ }catch(e){console.error(e);status.textContent='Nie udało się wygenerować. Spróbuj ponownie za chwilę. '+(e.message||'');}finally{go.disabled=false;go.textContent='✨ STWÓRZ MOJEGO BEBOKA'}
+};
+document.getElementById('download').onclick=()=>{if(outputUrl){const a=document.createElement('a');a.href=outputUrl;a.download='moj-bebok.png';a.click()}};
+document.getElementById('share').onclick=async()=>{if(!outputUrl)return;if(navigator.share){try{const b=await fetch(outputUrl).then(r=>r.blob());const f=new File([b],'moj-bebok.png',{type:b.type||'image/png'});await navigator.share({title:'Mój Bebok',text:'Zobacz mojego Beboka!',files:[f]})}catch(e){}}else{window.open(outputUrl,'_blank')}};
+</script>
+</body></html>
