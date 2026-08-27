@@ -1,0 +1,14 @@
+{
+  "episode_id": "001",
+  "title": "Skarb pod Spodkiem",
+  "status": "ready_for_generation",
+  "character": "fachura",
+  "scenes": [
+    {"id":1,"duration_seconds":5,"prompt":"Cinematic night in Katowice, Poland near the Spodek arena. Fachura, the canonical Bebok character, walks alone through a quiet street. Preserve exact character appearance, proportions, clothing and facial features from the reference image. Moody magical realism, subtle fog, slow tracking camera."},
+    {"id":2,"duration_seconds":5,"prompt":"Fachura suddenly stops and looks toward the pavement after hearing a mysterious sound underground. Preserve exact canonical character appearance. He slowly approaches a cracked stone surface. Cinematic close-up, atmospheric night lighting, suspense."},
+    {"id":3,"duration_seconds":5,"prompt":"Fachura discovers a hidden entrance beneath old stones and opens it carefully. Preserve exact canonical character appearance and clothing. Warm magical light emerges from below. Camera slowly pushes toward the opening, cinematic fantasy realism."},
+    {"id":4,"duration_seconds":5,"prompt":"Fachura descends into an ancient underground chamber beneath Katowice. Preserve exact canonical character appearance. Old brick walls, mysterious symbols, dust in the air, faint blue magical glow. Slow cinematic camera movement."},
+    {"id":5,"duration_seconds":5,"prompt":"In the underground chamber, Fachura discovers an ancient mysterious chest covered with glowing symbols. Preserve exact canonical character appearance. He approaches and reaches toward the chest. Magical particles, cinematic close-up, suspense."},
+    {"id":6,"duration_seconds":5,"prompt":"The ancient chest suddenly glows intensely as Fachura stands before it. Preserve exact canonical character appearance. The lid begins to open and an otherworldly light fills the chamber. Fachura looks shocked. End on a dramatic cliffhanger, cinematic fantasy."}
+  ]
+}
