@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>Stwórz swojego Beboka</title>
+  <meta name="description" content="Wgraj zdjęcie i stwórz swojego własnego Beboka z Katowic.">
+  <style>
+    :root{--bg:#0d0b13;--panel:#17131f;--panel2:#211a2c;--text:#fff8ee;--muted:#bcb2c8;--accent:#ffb83d;--accent2:#ff6f61;--line:#3a2d48}
+    *{box-sizing:border-box} body{margin:0;background:radial-gradient(circle at 20% 0%,#342143 0,#0d0b13 42%),#0d0b13;color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
+    .noise{position:fixed;inset:0;pointer-events:none;opacity:.06;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+    .wrap{width:min(1120px,92vw);margin:auto;padding:38px 0 70px}.hero{text-align:center;padding:24px 0 30px}.eyebrow{color:var(--accent);font-weight:800;letter-spacing:.13em;text-transform:uppercase;font-size:12px}.hero h1{font-size:clamp(42px,7vw,82px);line-height:.92;margin:13px 0 18px;letter-spacing:-.055em}.hero p{max-width:650px;margin:auto;color:var(--muted);font-size:18px;line-height:1.55}.studio{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:28px}.card{background:linear-gradient(145deg,rgba(33,26,44,.96),rgba(20,16,28,.96));border:1px solid var(--line);border-radius:28px;padding:24px;box-shadow:0 30px 80px rgba(0,0,0,.25)}.card h2{margin:0 0 8px;font-size:24px}.sub{color:var(--muted);font-size:14px;line-height:1.5}.drop{margin-top:18px;border:1.5px dashed #6a536f;border-radius:22px;min-height:330px;display:grid;place-items:center;text-align:center;padding:24px;cursor:pointer;background:rgba(255,255,255,.025);transition:.2s}.drop:hover,.drop.drag{border-color:var(--accent);background:rgba(255,184,61,.06)}.drop img{max-width:100%;max-height:300px;border-radius:18px;display:none;object-fit:contain}.drop.has img{display:block}.drop.has .drop-copy{display:none}.drop-copy strong{display:block;font-size:20px;margin-bottom:7px}.drop-copy span{color:var(--muted);font-size:13px}.options{display:grid;gap:14px;margin-top:20px}.label{font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.08em}.choices{display:flex;flex-wrap:wrap;gap:8px}.choice{border:1px solid var(--line);background:#191421;color:var(--text);border-radius:999px;padding:10px 13px;cursor:pointer}.choice.active{background:var(--accent);color:#1c1307;border-color:var(--accent);font-weight:800}.generate{width:100%;margin-top:22px;border:0;border-radius:16px;padding:17px 18px;font-size:17px;font-weight:900;background:linear-gradient(135deg,var(--accent),#ffd26e);color:#211505;cursor:pointer;box-shadow:0 12px 35px rgba(255,184,61,.2)}.generate:disabled{opacity:.45;cursor:not-allowed}.status{min-height:22px;margin-top:12px;color:var(--muted);font-size:13px;text-align:center}.result{min-height:100%;display:flex;flex-direction:column}.result-box{flex:1;min-height:470px;border-radius:22px;border:1px solid var(--line);background:radial-gradient(circle at 50% 25%,rgba(255,184,61,.15),transparent 38%),repeating-conic-gradient(#211a2c 0 25%,#1b1625 0 50%) 50%/28px 28px;display:grid;place-items:center;overflow:hidden}.result-box img{width:100%;height:100%;max-height:620px;object-fit:contain;display:none}.empty{padding:30px;text-align:center;color:var(--muted)}.empty .orb{width:100px;height:100px;border-radius:50%;margin:0 auto 20px;background:radial-gradient(circle at 35% 30%,#ffe2a3,#ff9f43 45%,#7a354e);box-shadow:0 0 80px rgba(255,184,61,.25)}.result.ready .empty{display:none}.result.ready .result-box img{display:block}.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.action{border:1px solid var(--line);border-radius:14px;padding:13px;background:#18131f;color:var(--text);font-weight:800;cursor:pointer}.action.primary{background:var(--accent);color:#211505;border-color:var(--accent)}.note{margin-top:18px;color:#91859b;font-size:12px;line-height:1.5}.privacy{margin-top:26px;text-align:center;color:#80758a;font-size:12px}.privacy strong{color:#aaa0b2}@media(max-width:800px){.studio{grid-template-columns:1fr}.result-box{min-height:360px}.wrap{padding-top:20px}.hero p{font-size:16px}}
+  </style>
+</head>
+<body>
+<div class="noise"></div>
+<main class="wrap">
+  <section class="hero">
+    <div class="eyebrow">BEBOKI • KATOWICE</div>
+    <h1>Stwórz swojego<br>Beboka.</h1>
+    <p>Wgraj swoje zdjęcie. Wybierz charakter. My zamienimy Cię w Twoją własną postać z bebokowego świata.</p>
+  </section>
+
+  <section class="studio">
+    <div class="card">
+      <h2>1. Pokaż nam siebie</h2>
+      <div class="sub">Najlepiej działa zdjęcie, na którym dobrze widać twarz i sylwetkę.</div>
+      <label class="drop" id="drop">
+        <input id="file" type="file" accept="image/png,image/jpeg,image/webp" hidden>
+        <img id="source" alt="Twoje zdjęcie">
+        <div class="drop-copy"><strong>📸 Wgraj swoje zdjęcie</strong><span>JPG, PNG lub WEBP • zdjęcie zostaje użyte tylko do generowania</span></div>
+      </label>
+
+      <div class="options">
+        <div><div class="label">Charakter</div><div class="choices" data-group="personality"><button class="choice active" data-value="figlarny">😈 Figlarny</button><button class="choice" data-value="bohaterski">🦸 Bohaterski</button><button class="choice" data-value="tajemniczy">🌙 Tajemniczy</button><button class="choice" data-value="szalony">🤪 Szalony</button></div></div>
+        <div><div class="label">Rola</div><div class="choices" data-group="profession"><button class="choice active" data-value="bebok z Katowic">🏙️ Katowiczanin</button><button class="choice" data-value="strażnik Spodka">🛡️ Strażnik Spodka</button><button class="choice" data-value="poszukiwacz skarbów">🗺️ Poszukiwacz skarbów</button><button class="choice" data-value="mistrz kuchni">🍕 Mistrz kuchni</button></div></div>
+      </div>
+      <button class="generate" id="generate" disabled>✨ STWÓRZ MOJEGO BEBOKA</button>
+      <div class="status" id="status"></div>
+      <div class="note">Generator korzysta z NVIDIA FLUX.2 klein 4B. Zdjęcie jest wysyłane do naszego endpointu tylko na czas generowania.</div>
+    </div>
+
+    <div class="card result" id="result">
+      <h2>2. Twój Bebok</h2>
+      <div class="sub">Po wygenerowaniu możesz zapisać obraz albo udostępnić go znajomym.</div>
+      <div class="result-box">
+        <div class="empty"><div class="orb"></div><strong>Tu pojawi się Twój Bebok</strong><p>Gotowy na przemianę?</p></div>
+        <img id="output" alt="Wygenerowany Bebok">
+      </div>
+      <div class="actions">
+        <button class="action primary" id="download" disabled>⬇️ Zapisz naklejkę</button>
+        <button class="action" id="share" disabled>📤 Wyślij znajomym</button>
+      </div>
+    </div>
+  </section>
+  <div class="privacy"><strong>Tip:</strong> na iPhonie po zapisaniu obrazu możesz użyć go jako naklejki w Wiadomościach. Bezpośrednie wysyłanie iMessage wymaga natywnej aplikacji iMessage — zrobimy to jako kolejny etap.</div>
+</main>
+<script>
+const fileInput=document.getElementById('file');const drop=document.getElementById('drop');const source=document.getElementById('source');const generate=document.getElementById('generate');const status=document.getElementById('status');const output=document.getElementById('output');const result=document.getElementById('result');const download=document.getElementById('download');const share=document.getElementById('share');let imageData='';let personality='figlarny';let profession='bebok z Katowic';
+function loadFile(file){if(!file||!file.type.startsWith('image/'))return;const reader=new FileReader();reader.onload=()=>{imageData=reader.result;source.src=imageData;drop.classList.add('has');generate.disabled=false};reader.readAsDataURL(file)}
+fileInput.addEventListener('change',e=>loadFile(e.target.files[0]));['dragenter','dragover'].forEach(n=>drop.addEventListener(n,e=>{e.preventDefault();drop.classList.add('drag')}));['dragleave','drop'].forEach(n=>drop.addEventListener(n,e=>{e.preventDefault();drop.classList.remove('drag')}));drop.addEventListener('drop',e=>loadFile(e.dataTransfer.files[0]));
+document.querySelectorAll('.choices').forEach(group=>group.addEventListener('click',e=>{const b=e.target.closest('.choice');if(!b)return;group.querySelectorAll('.choice').forEach(x=>x.classList.remove('active'));b.classList.add('active');if(group.dataset.group==='personality')personality=b.dataset.value;else profession=b.dataset.value}));
+generate.addEventListener('click',async()=>{if(!imageData)return;generate.disabled=true;status.textContent='✨ Bebok właśnie powstaje…';result.classList.remove('ready');try{const r=await fetch('/api/generate-bebok',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({image:imageData,personality,profession})});const data=await r.json();if(!r.ok)throw new Error(data.error||'Nie udało się wygenerować Beboka.');output.src=data.image;result.classList.add('ready');download.disabled=false;share.disabled=false;status.textContent='Gotowe! Twój Bebok właśnie dołączył do świata.'}catch(err){status.textContent='⚠️ '+err.message}finally{generate.disabled=false}});
+download.addEventListener('click',()=>{if(!output.src)return;const a=document.createElement('a');a.href=output.src;a.download='moj-bebok.png';a.click()});share.addEventListener('click',async()=>{try{const blob=await (await fetch(output.src)).blob();const file=new File([blob],'moj-bebok.png',{type:'image/png'});if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({title:'Mój Bebok',text:'Zobacz mojego Beboka! 👹',files:[file]})}else{await navigator.clipboard.writeText(location.href);alert('Udostępnianie pliku nie jest obsługiwane przez tę przeglądarkę. Link do generatora został skopiowany.')}}catch(e){}});
+</script>
+</body>
+</html>
