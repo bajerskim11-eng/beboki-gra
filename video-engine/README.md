@@ -17,7 +17,7 @@ Postać jest wybierana z `characters.json`. Backend pobiera jej kanoniczną refe
 
 ## Model
 
-Pierwszy silnik używa `wan2.1_i2v_480p_14B_fp16.safetensors`. Oficjalna dokumentacja ComfyUI dla Wan 2.1 I2V wskazuje ten model wraz z VAE, text encoderem i CLIP Vision jako elementy workflow I2V. citeturn0search0
+Pierwszy silnik używa `wan2.1_i2v_480p_14B_fp16.safetensors`.
 
 Wymagane pliki:
 
@@ -86,7 +86,7 @@ curl http://127.0.0.1:8080/jobs/<PROMPT_ID>
 
 ## Ciągłość postaci
 
-`characters.json` jest źródłem prawdy dla wyglądu. Backend automatycznie dodaje blokadę tożsamości oraz negatywny prompt przeciw zmianie twarzy, futra, fryzury, ubioru i przedmiotów charakterystycznych. fileciteturn47file0
+`characters.json` jest źródłem prawdy dla wyglądu. Backend automatycznie dodaje blokadę tożsamości oraz negatywny prompt przeciw zmianie twarzy, futra, fryzury, ubioru i przedmiotów charakterystycznych.
 
 To jest pierwszy poziom continuity. Następny etap to referencyjne adaptery/LoRA i pamięć między ujęciami, a potem generowanie całego odcinka z planem scen.
 
@@ -103,5 +103,3 @@ Wan 2.1 jest projektem open-source, ale generowanie 14B wymaga mocnego GPU. Nie 
 5. Story Engine dzieli historię na sceny.
 6. Pipeline automatycznie montuje odcinek.
 7. Podpinamy `create episode` do Shopify.
-
-ComfyUI ma również oficjalny workflow Wan VACE Reference-to-Video, który jest szczególnie interesujący dla naszego celu zachowania wyglądu postaci. citeturn0search7
