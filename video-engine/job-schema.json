@@ -1,0 +1,20 @@
+{
+  "id": "string",
+  "characterId": "hanys",
+  "scene": {
+    "location": "Katowice",
+    "action": "string",
+    "dialogue": "string",
+    "camera": "cinematic",
+    "durationSeconds": 5
+  },
+  "continuity": {
+    "previousShotId": null,
+    "seed": 123456,
+    "keepCharacterIdentity": true,
+    "keepWardrobe": true,
+    "keepEnvironment": false
+  },
+  "renderer": "comfyui",
+  "model": "ltx"
+}
