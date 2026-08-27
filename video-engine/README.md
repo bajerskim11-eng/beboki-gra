@@ -26,6 +26,42 @@ Generator nie powinien wymyślać wyglądu postaci od nowa dla każdego ujęcia.
 - Fachura — niebieski, górnik, dwa świecące kilofy
 - Podciep — fioletowy, latarnik, lampa
 
+## API bridge — gotowe
+
+`server.py` udostępnia:
+
+- `GET /health` — sprawdza API i dostępność ComfyUI
+- `GET /characters` — zwraca kanoniczną bazę Beboków
+- `POST /generate` — przyjmuje postać + opis sceny + opcjonalny seed i wysyła workflow do ComfyUI
+- `GET /jobs/{prompt_id}` — pobiera status/wynik joba z ComfyUI
+
+Uruchomienie lokalne:
+
+```bash
+cd video-engine
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env
+uvicorn server:app --reload --port 8000
+```
+
+ComfyUI powinno działać domyślnie na `http://127.0.0.1:8188` albo adres należy ustawić w `COMFYUI_URL`.
+
+## Workflow ComfyUI
+
+`comfyui_workflow.template.json` jest kontraktem, a nie gotowym workflow modelu. Celowo nie wpisujemy na sztywno nazw custom-node'ów, ponieważ Wan/LTX mogą być zainstalowane przez różne rozszerzenia ComfyUI.
+
+W ComfyUI należy:
+
+1. zainstalować wybrany open-source video model i jego custom nodes,
+2. zbudować działające image-to-video workflow,
+3. wyeksportować je w formacie API,
+4. podmienić wartości wejściowe na placeholdery `{{PROMPT}}` i `{{SEED}}`,
+5. dla węzła obrazu referencyjnego użyć `{{REFERENCE_IMAGE}}` po dodaniu adaptera uploadu referencji.
+
+To pozwala zmienić Wan/LTX bez przebudowy API Shopify.
+
 ## Generowanie odcinka
 
 1. Użytkownik podaje pomysł.
@@ -37,6 +73,10 @@ Generator nie powinien wymyślać wyglądu postaci od nowa dla każdego ujęcia.
 7. Pipeline montuje odcinek.
 8. Shopify może wyświetlić gotowy film.
 
+## Następny krok
+
+Podłączamy konkretny workflow Wan/LTX i robimy pierwszy test: **Fachura znajduje magiczną skrzynię pod Spodkiem**. Dopiero po przejściu tego testu podpinamy przycisk generatora do Shopify.
+
 ## Ważne
 
-Obecne zdjęcia są referencjami wizualnymi. Nie są jeszcze modelami 3D ani wagami LoRA/Checkpoint. W następnym kroku można dodać LoRA/adaptery dla każdej postaci, jeśli uzyskamy odpowiednie materiały treningowe i zgodę na ich użycie.
+Obecne zdjęcia są referencjami wizualnymi. Nie są jeszcze modelami 3D ani wagami LoRA/Checkpoint. Docelowo możemy dodać LoRA/adaptery dla każdej postaci, jeśli uzyskamy odpowiednie materiały treningowe i zgodę na ich użycie.
