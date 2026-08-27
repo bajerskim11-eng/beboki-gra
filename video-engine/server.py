@@ -9,17 +9,21 @@ from typing import Any
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
 from nvidia_cosmos import generate_with_cosmos
 
 ROOT = Path(__file__).resolve().parent
+OUTPUT_DIR = ROOT / "outputs"
+OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 COMFYUI_URL = os.getenv("COMFYUI_URL", "http://127.0.0.1:8188").rstrip("/")
 CHARACTERS_FILE = ROOT / "characters.json"
 WORKFLOW_FILE = ROOT / "workflows" / "wan2.1_i2v_api.json"
 
-app = FastAPI(title="Beboki Video Engine", version="0.3.0")
+app = FastAPI(title="Beboki Video Engine", version="0.3.1")
 app.add_middleware(CORSMiddleware, allow_origins=[x.strip() for x in os.getenv("CORS_ORIGINS", "*").split(",")], allow_credentials=False, allow_methods=["*"], allow_headers=["*"])
+app.mount("/outputs", StaticFiles(directory=OUTPUT_DIR), name="outputs")
 
 def load_characters() -> dict[str, Any]:
     return json.loads(CHARACTERS_FILE.read_text(encoding="utf-8"))
@@ -87,7 +91,8 @@ def generate(request: GenerateRequest) -> dict[str, Any]:
 
     if request.provider == "nvidia":
         result = generate_with_cosmos(prompt=prompt, image_bytes=image_bytes, image_content_type=content_type, seed=seed, width=request.width, height=request.height, frames=request.frames)
-        return {"ok": True, "job_id": job_id, "provider": "nvidia", "character_id": character["id"], "seed": seed, "result": result, "continuity": {"identity_locked": registry["rules"]["identity_locked"], "signature_items_preserved": registry["rules"]["preserve_signature_items"]}}
+        filename = result["filename"]
+        return {"ok": True, "job_id": job_id, "provider": "nvidia", "character_id": character["id"], "seed": seed, "result": result, "video_url": f"/outputs/{filename}", "continuity": {"identity_locked": registry["rules"]["identity_locked"], "signature_items_preserved": registry["rules"]["preserve_signature_items"]}}
 
     workflow = request.workflow
     if workflow is None:
