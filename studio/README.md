@@ -1,63 +1,36 @@
 # Beboki Story Studio
 
-Local-first studio do produkcji całej bajki „Beboki i Serce Śląska”.
+Local-first studio do produkcji całej bajki **„Beboki i Serce Śląska”**.
 
-## Co robi
+## Pipeline
 
-- **Story Bible + pamięć**: zapisuje kanon świata, postaci, odcinki, sceny i decyzje.
-- **Generator historii**: opcjonalnie używa Ollama do pisania scen, dialogów i promptów.
-- **Generator grafik**: wysyła zadania do lokalnego ComfyUI.
-- **Generator wideo**: wysyła zadania do ComfyUI z Wan2.1 / LTX-2.
-- **Montaż**: FFmpeg składa wygenerowane klipy w MP4.
-- **YouTube-ready**: docelowo 1920×1080, 24/25 fps, H.264/AAC.
+`story bible → scene plan → keyframes → image-to-video → voice/music → FFmpeg → episode.mp4`
+
+GitHub przechowuje kod, prompty i pamięć. Duże checkpointy modeli uruchamiamy na NVIDIA GPU / Colab / innym środowisku GPU — nie commitujemy wag ani sekretów.
 
 ## Open-source stack
 
-- ComfyUI — silnik workflow dla obrazu/wideo.
-- Qwen-Image / Qwen-Image-Edit — grafiki i zachowanie wyglądu postaci.
-- Wan2.1 — image-to-video / text-to-video.
-- Ollama — lokalny model językowy do scenariusza.
-- SQLite — prosta lokalna pamięć projektu.
-- FFmpeg — montaż i konwersja.
-- Remotion — opcjonalna warstwa animowanych napisów/komiksowych przejść.
+- **ComfyUI** — orkiestracja workflowów obrazu i wideo.
+- **Qwen-Image** — keyframe'y, komiksowe kadry i edycja obrazów.
+- **Wan2.1 1.3B** — pierwszy test image-to-video przy małym VRAM.
+- **Wan2.2 TI2V-5B** — docelowy upgrade do 720p image+text-to-video przy odpowiednim GPU.
+- **Ollama** — lokalny scenarzysta/prompt planner.
+- **SQLite** — trwała pamięć historii.
+- **FFmpeg** — montaż odcinka.
+- **Remotion** — opcjonalnie napisy i komiksowe przejścia.
 
-Kod/model to jedno; **GPU/energia nie są automatycznie darmowe**. Najlepiej uruchamiać generację na NVIDIA GPU albo w środowisku GPU/Colab.
+## GPU setup
 
-## Start
+Uruchom `studio/scripts/bootstrap_gpu.sh` na Linux/NVIDIA/Colab-style runtime. Skrypt instaluje ComfyUI obok repo i tworzy katalogi modeli. Następnie `studio/scripts/run_comfy.sh` uruchamia ComfyUI.
 
-```bash
-cd studio
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-cp .env.example .env
-uvicorn backend.main:app --reload --port 8787
-```
+## Pierwszy odcinek
 
-Otwórz `http://localhost:8787`.
+**Odcinek 1 — Co wyczuł pies?**
 
-### Ollama
+Noc w Katowicach. Pies nagle wyczuwa coś pod starą ceglaną kamienicą. Cztery Beboki ruszają za jego tropem. W piwnicy odkrywają pierwszy ślad prowadzący do fragmentu Serca Śląska.
 
-Zainstaluj Ollama i pobierz dowolny lokalny model tekstowy, np. Qwen/Gemma zgodny z Twoją kartą:
+Styl: filmowy, baśniowy Śląsk, mokry bruk, cegła, stare szyby i kopalniane konstrukcje, ciepłe latarnie, mgła, światło magiczne, komiksowe kadrowanie, spójna twarz/futro/ubiór kanonicznych Beboków.
 
-```bash
-ollama run qwen3
-```
+## Ważne
 
-### ComfyUI
-
-Uruchom ComfyUI i ustaw:
-
-```env
-COMFY_URL=http://127.0.0.1:8188
-```
-
-W ComfyUI przygotuj workflow API dla obrazu, image-to-video (Wan2.1) i ewentualnie LTX-2. Workflow JSON-y trzymaj w `studio/workflows/`.
-
-## Zasada kanonu
-
-Cztery dostarczone przez Ciebie Beboki są **referencją kanoniczną**. Studio przechowuje ich opisy w `story/canon.json`. Każdy prompt sceny automatycznie dołącza opis kanonu.
-
-## Licencje
-
-Sprawdź osobno licencję każdego modelu i assetu przed publikacją komercyjną. Qwen-Image i Wan2.1 deklarują Apache-2.0 dla swoich modeli; ComfyUI ma własną licencję. Nie zakładamy, że każdy pobrany checkpoint lub LoRA ma tę samą licencję.
+Nie deklarujemy „działa”, dopóki nie wykonamy testu generacji na GPU. Darmowy kod/model nie oznacza darmowej mocy obliczeniowej. Licencję każdego modelu, LoRA i assetu sprawdzamy osobno przed publikacją komercyjną.
