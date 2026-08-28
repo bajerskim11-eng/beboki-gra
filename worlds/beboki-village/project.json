@@ -1,0 +1,12 @@
+{
+  "id": "beboki-village",
+  "name": "Osada Beboków",
+  "source": "https://cdn.shopify.com/s/files/1/1019/1903/1622/files/beboki-village-source.jpg?v=1787899947",
+  "generator": "image2world",
+  "runtime": "spark-2.1",
+  "target": "browser-mobile",
+  "worldAsset": "/worlds/beboki-village/0-world-500k.spz",
+  "collisionAsset": "/worlds/beboki-village/0-world.glb",
+  "status": "awaiting-generated-world",
+  "canonicalCharacters": ["Hanys", "Hopla", "Fachura", "Podciep"]
+}
