@@ -5,6 +5,8 @@
   "outputDirectory": ".",
   "rewrites": [
     { "source": "/avatar", "destination": "/avatar.html" },
-    { "source": "/bebok", "destination": "/bebok.html" }
+    { "source": "/bebok", "destination": "/bebok.html" },
+    { "source": "/game", "destination": "/play.html" },
+    { "source": "/", "destination": "/play.html" }
   ]
 }
