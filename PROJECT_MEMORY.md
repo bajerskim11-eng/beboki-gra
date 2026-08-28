@@ -1,104 +1,94 @@
 # BEBOKI — PAMIĘĆ PROJEKTU
 
-> Ten plik jest źródłem prawdy dla dalszego rozwoju gry. Aktualizuj go po ważnych decyzjach, zmianach architektury, odkrytych problemach i znalezionych repozytoriach.
+> Źródło prawdy dla dalszego rozwoju gry. Aktualizujemy po ważnych decyzjach, researchu, błędach i wdrożeniach.
 
 ## 1. CEL GRY
+Beboki to mobilna gra przeglądarkowa łącząca **Lemmings + Heroes of Might and Magic + Penguin Club**, osadzona w Katowicach.
 
-Beboki to przeglądarkowa gra mobilna inspirowana połączeniem **Lemmings + Heroes of Might and Magic + Penguin Club**.
+Pętla: **osada → mapa Katowic → misja → wybór drużyny → eksploracja → ratowanie psów → nagrody → rozwój osady → kolejne lokacje**.
 
-Główna pętla:
-**osada → mapa Katowic → misja → wybór drużyny → eksploracja → ratowanie psów → nagrody → rozwój osady → kolejne lokacje**.
-
-Świat ma zachować charakter Katowic i Beboków, a nie wyglądać jak generyczna gra fantasy.
+Nie chcemy generycznego fantasy. Katowice, piwnice, kopalnie, kamienice, Beboki i psy mają być rdzeniem świata.
 
 ## 2. POSTACIE
+- **Hanys** — kopanie, zawały, budowanie.
+- **Hopla** — zwiad, tropienie, ukryte przejścia.
+- **Fachura** — mechanizmy, urządzenia, naprawy.
+- **Podciep** — światło, sekrety, ochrona.
 
-Podstawowa drużyna:
-- Hanys — górnik/budowniczy, kopanie i usuwanie zawałów.
-- Hopla — zwiadowczyni, szukanie drogi i ukrytych przejść.
-- Fachura — wynalazca, mechanizmy i urządzenia.
-- Podciep — latarnik/strażnik, światło i odkrywanie sekretów.
+Styl: zgodny z dostarczonymi grafikami; realistyczny/filmowy, sympatyczny, szczegółowy, bez przesadnej bajkowości i bez horroru.
 
-Postacie mają zachować wygląd z dostarczonych przez użytkownika grafik: realistyczne, szczegółowe futro, duże oczy, charakterystyczne stroje robocze, lekko filmowy wygląd. Nie robić ich zbyt bajkowymi ani mrocznymi.
+## 3. GAMEPLAY — DOCZELOWY MODEL
+Gracz nie steruje każdą postacią jak w zwykłym RPG. Wydaje **polecenia jednostkom**.
 
-## 3. HISTORIA / ŚWIAT
+Przykład:
+- kliknij miejsce → Bebok znajduje drogę;
+- kliknij zawał → Hanys może kopać;
+- kliknij podejrzane miejsce → Hopla może zbadać;
+- kliknij mechanizm → Fachura może naprawić;
+- kliknij ciemny obszar → Podciep może oświetlić.
 
-Psy zaczynają wyczuwać coś pod ziemią i chowają się po piwnicach. Beboki wyruszają, żeby je odnaleźć. Tajemnica prowadzi przez piwnice, kopalnie i Katowice.
+Każda akcja ma koszt/czas i zmienia stan świata. Misje mają cele i wymagają kombinowania rolami.
 
-Docelowo świat może rozszerzyć się o większą mapę Katowic, lokacje AR, NPC, wydarzenia i rozbudowaną historię.
+## 4. PIERWSZY VERTICAL SLICE
+Jedna grywalna piwnica: tilemap, ściany i kolizje, grid, pathfinding, 4 Beboki jako jednostki, zawał, mechanizm, ciemny obszar, ukryte przejście, 6 kości, pies jako cel, nagroda i powrót do osady.
 
-## 4. UX / PLATFORMY
-
-Priorytet: **telefon i przeglądarka**.
-
-Gra ma działać bez instalacji. Desktop może być wspierany, ale projektowanie zaczynamy mobile-first.
-
-## 5. OBECNA ARCHITEKTURA
-
+## 5. ARCHITEKTURA
 - Repo: `bajerskim11-eng/beboki-gra`
 - Hosting: Vercel
-- Frontend/prototyp: HTML/JS + rozpoczęta integracja Phaser
-- Grafiki postaci: Shopify CDN
-- Lokalny prototyp zapisu: localStorage
-- Wcześniejszy kierunek techniczny dla 3D: React/Three.js na Vercel + NVIDIA TRELLIS przez `/api/generate-3d`; klucz NVIDIA wyłącznie po stronie serwera jako `NVIDIA_API_KEY`.
+- Silnik: **Phaser 4**.
+- Mapy: **Tiled** lub Phaser Tilemap Editor.
+- Ruch/grid: **Grid Engine**.
+- Pathfinding: Grid Engine/A* na małych mapach; navmesh dopiero przy dużych, nieregularnych lokacjach.
+- Assety: Shopify CDN lub repo `assets/`, zależnie od licencji i stabilności.
+- Stan gry: osobny model danych, niezależny od UI.
+- Prototyp: localStorage.
+- Produkcja: backend/baza (Supabase jest kandydatem) dla kont, postępu, ekwipunku i świata.
 
-## 6. KIERUNEK TECHNICZNY GRY
+## 6. RESEARCH — NAJWAŻNIEJSZE
+### Grid Engine — `Annoraaq/grid-engine`
+Kompatybilny z Phaser 4, Apache-2.0. Oferuje grid movement, kolizje, pathfinding, collision groups, multi-tile objects, izometrię i ruch 4/8-kierunkowy. Znaleziona wersja: 2.52.1 (maj 2026).
 
-Nie budować kolejnych atrap ekranów. Rozwijać w stronę prawdziwej gry:
-- Phaser jako kandydat na silnik 2D przeglądarkowy.
-- Tilemapy / grid dla plansz misji.
-- Sceny: Osada, Mapa, Misja, Budynek, Nagroda.
-- Stan gracza oddzielony od UI.
-- Docelowo backend/baza danych dla kont, postępu, ekwipunku i świata.
+**Decyzja:** bardzo mocny kandydat do integracji zamiast pisania własnego systemu ruchu.
 
-## 7. REPOZYTORIA / INSPIRACJE
+### Phaser RPG Template — `danielart/phaser-rpg-template`
+MIT. Tiled maps, sceny/NPC, drzwi i ukryte drzwi, Grid Engine, interakcje. Bazuje na Phaser 3, więc traktować jako wzorzec, nie kopiować bezpośrednio do Phaser 4.
 
-### Pogicity Demo
-`twofactor/pogicity-demo`
+### Phaser Navmesh — `sporadic-labs/phaser-navmesh`
+MIT. Pathfinding przez navmesh. Zostawić jako opcję dla dużych, nieregularnych lokacji; niepotrzebny w pierwszej piwnicy.
 
-Warto wykorzystać jako inspirację/źródło architektury dla izometrycznej osady, budynków, gridu i city-buildera. Kod repo jest MIT, ale nie zakładać, że wszystkie assety graficzne mają tę samą licencję.
+### Phaser Tiled — `englercj/phaser-tiled`
+MIT, ale legacy/stary projekt. **Nie używać.**
 
-### Phaser RPG Template
-`remarkablegames/phaser-rpg`
+### Phaser Grid Movement — `Annoraaq/grid-movement`
+Tutorial/demo ruchu gridowego. Do nauki/debugowania; preferować Grid Engine jako bibliotekę.
 
-Warto wykorzystać jako inspirację dla map, NPC, scen, interakcji i struktury RPG. Licencję sprawdzać przed kopiowaniem kodu/assetów.
+### Helbreath Base Game
+Open-source baza 2D RPG/MMORPG z Phaserem, Reactem i serwerem. Obserwować rozwiązania map, NPC, ekwipunku i multiplayera; nie kopiować architektury przed stabilnym vertical slice.
 
-### Phaser
-`phaserjs/phaser`
-
-Główny kandydat na silnik gry 2D w przeglądarce.
+## 7. LICENCJE
+Kod i assety oceniamy osobno. MIT/Apache-2.0 kodu nie oznacza automatycznie takiej samej licencji assetów. Nie kopiować assetów bez sprawdzenia.
 
 ## 8. ZASADA DALSZEJ PRACY
+1. Najpierw czytaj istniejący kod i pamięć.
+2. Szukaj sprawdzonych open-source rozwiązań przed pisaniem własnego systemu.
+3. Sprawdzaj aktualność repo i licencję.
+4. Integruj małe, niezależne elementy.
+5. Po każdej większej zmianie testuj deployment.
+6. Nie deklaruj „działa” bez weryfikacji.
+7. Nie wkładaj kluczy API do frontendu/GitHuba.
+8. Nie twórz kolejnych atrap ekranów, jeśli możemy implementować mechanikę.
 
-Przed implementacją większej funkcji:
-1. Sprawdź istniejący kod/repo.
-2. Sprawdź, czy istnieje gotowe open-source repo lub biblioteka, którą można legalnie wykorzystać.
-3. Sprawdź licencję kodu i assetów osobno.
-4. Nie twórz ponownie rzeczy, które można stabilnie wykorzystać.
-5. Po każdej większej zmianie zapisz decyzję tutaj.
-6. Po wdrożeniu sprawdź deployment i działanie strony — nie deklaruj „działa”, jeśli nie zostało zweryfikowane.
-
-## 9. BACKLOG — NAJBLIŻSZE
-
-1. Stabilny ekran startowy i logowanie.
-2. Osada z prawdziwą grafiką/sceną.
-3. Klikalne budynki.
-4. Mapa Katowic.
-5. Pierwsza prawdziwa plansza tilemap.
-6. Ruch Beboków po planszy.
-7. Umiejętności postaci wpływające na środowisko.
-8. Pies jako aktywny cel misji.
-9. System nagród i ekwipunku.
-10. Rozwój osady.
-11. Konto + backend.
-12. Multiplayer/social features w późniejszym etapie.
-
-## 10. CZEGO UNIKAĆ
-
-- Generycznego fantasy zamiast Katowic.
-- Nadmiernie bajkowego stylu.
-- Nadmiernie mrocznej grafiki.
-- Samych ekranów demonstracyjnych bez mechaniki.
-- Wrzucania przypadkowych assetów bez sprawdzenia licencji.
-- Umieszczania kluczy API w frontendzie/GitHubie.
-- Twierdzenia, że wdrożenie działa bez faktycznej weryfikacji.
+## 9. BACKLOG PRIORYTETOWY
+1. Stabilna aplikacja Phaser 4.
+2. Integracja Grid Engine.
+3. Pierwsza tilemap piwnicy.
+4. Kolizje + grid + pathfinding.
+5. Jednostki Beboków i click-to-move.
+6. System umiejętności/interakcji z obiektami.
+7. Pies i warunki zwycięstwa.
+8. Nagrody + stan misji.
+9. Osada jako prawdziwa scena gry.
+10. Mapa Katowic.
+11. Backend/Supabase.
+12. Social/multiplayer.
+13. AR jako późniejsza warstwa świata.
