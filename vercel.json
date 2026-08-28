@@ -1,13 +1,1 @@
-{
-  "version": 2,
-  "cleanUrls": true,
-  "buildCommand": null,
-  "outputDirectory": ".",
-  "rewrites": [
-    { "source": "/builder", "destination": "/builder.html" },
-    { "source": "/avatar", "destination": "/avatar.html" },
-    { "source": "/bebok", "destination": "/bebok.html" },
-    { "source": "/game", "destination": "/play.html" },
-    { "source": "/", "destination": "/play.html" }
-  ]
-}
+{"version":2,"cleanUrls":true,"buildCommand":null,"outputDirectory":".","rewrites":[{"source":"/builder","destination":"/builder.html"},{"source":"/avatar","destination":"/avatar.html"},{"source":"/bebok","destination":"/bebok.html"},{"source":"/game","destination":"/play.html"},{"source":"/","destination":"/builder.html"}]}
