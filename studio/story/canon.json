@@ -1,0 +1,23 @@
+{
+  "title": "Beboki i Serce Śląska",
+  "world": {
+    "start": "Katowice",
+    "premise": "Psy wyczuwają ukryte fragmenty Serca Śląska. Beboki pomagają psom, a psy prowadzą je do kolejnych fragmentów.",
+    "finale": "Po złożeniu wszystkich fragmentów Serce uruchamia przemianę świata w utopijną cywilizację współpracy, automatyzacji i czystej energii. Kraina Beboków staje się krainą mlekiem i miodem płynącą.",
+    "tone": "baśniowa przygoda, śląski klimat, humor, ciepło, tajemnica, nadzieja",
+    "visual_style": "filmowy komiks, realistyczne materiały, baśniowe światło, industrialne Katowice, głębokie cienie, ciepłe lampy"
+  },
+  "characters": [
+    {"id":"hopla","name":"Hopla","color":"różowa","role":"zwiad i tropienie","canonical_note":"jasne futro, różowe włosy, różowy strój roboczy, górniczy hełm z lampką, plecak"},
+    {"id":"podciep","name":"Podciep","color":"fioletowa","role":"światło, sekrety i ochrona","canonical_note":"fioletowe futro, fioletowe włosy, fioletowy strój roboczy, szalik, lampa w dłoni"},
+    {"id":"hanys","name":"Hanys","color":"zielony","role":"kopanie i budowanie","canonical_note":"zielone futro, zielone włosy, zielony strój roboczy, kilof, ciężkie buty"},
+    {"id":"fachura","name":"Fachura","color":"niebieska","role":"mechanizmy i naprawy","canonical_note":"niebieskie futro, niebieskie włosy, niebieski strój roboczy, górniczy hełm, dwa narzędzia"}
+  ],
+  "rules": [
+    "Nie zmieniaj kolorów, fryzur i głównych rekwizytów Beboków bez decyzji autora.",
+    "Psy są bohaterami prowadzącymi do fragmentów Serca.",
+    "Katowice i śląski industrialny charakter mają pozostać rozpoznawalne.",
+    "Serce Śląska jest symbolem współpracy i dobra, nie bronią.",
+    "Finał ma pokazać świat utopijny, ale nadal baśniowy i pełen charakteru."
+  ]
+}
