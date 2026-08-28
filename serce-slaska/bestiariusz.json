@@ -1,0 +1,37 @@
+{
+  "version": "0.1",
+  "rules": ["FAKT", "ZAPIS LUDOWY", "INTERPRETACJA", "FIKCJA SAGI"],
+  "entries": [
+    {"name":"Utopiec","aliases":["utopek","topek","topielec","topnik"],"type":"istota","domain":"woda","traits":["zielone oczy","pomarszczona twarz","broda","długie włosy","czerwone odzienie","fajka","zmiennokształtność","kapanie wody zdradzające przebranie"],"status":"ZAPIS LUDOWY","source":"Spurgiasz 2025; materiały folklorystyczne"},
+    {"name":"Skarbnik","aliases":["Skarbek","Berggeist"],"type":"istota","domain":"kopalnia","traits":["duch podziemi","latarnia","kilof","bogato zdobiony mundur","próba charakteru","aktywność o północy i południu"],"status":"ZAPIS LUDOWY","source":"Spurgiasz 2025; materiały górnicze"},
+    {"name":"Bebok","aliases":["bubog","bobok","babok","babo"],"type":"istota","domain":"noc/dzieci","traits":["groźny straszak","długie zęby","duża głowa","długie nogi","worek","nocna aktywność","strych","stodoła","las","moczar"],"status":"ZAPIS LUDOWY","source":"Spurgiasz 2025"},
+    {"name":"Diabeł","aliases":["dioboł","rokita","zły","czort","raroszek","corny chłopek"],"type":"istota","domain":"chaos/układ","traits":["rogi","ogon","kopyta","czarny wygląd","lot","przenoszenie ciężarów","zmiennokształtność"],"status":"ZAPIS LUDOWY","source":"Spurgiasz 2025"},
+    {"name":"Szarlej","aliases":[],"type":"istota","domain":"podziemia/kruszec/woda","traits":["duch podziemnego bogactwa","zalanie wyrobisk","tajemne znaki"],"status":"DO KWERENDY ŹRÓDŁOWEJ","source":"Roździeński i późniejsze opracowania"},
+    {"name":"Zmora","aliases":["mara"],"type":"istota","domain":"sen/noc","traits":["sen","duszenie","lęk"],"status":"DO KWERENDY","source":"korpus śląskich wierzeń"},
+    {"name":"Nocnica","aliases":["Klękanica"],"type":"istota","domain":"noc","traits":["strach nocny","dzieci","przestrzeń po zmroku"],"status":"DO KWERENDY","source":"regionalne katalogi śląskich strachów"},
+    {"name":"Heksa","aliases":[],"type":"istota","domain":"magia","traits":["czarownica","wierzenia magiczne","lokalne warianty"],"status":"DO KWERENDY","source":"regionalny korpus demonologiczny"},
+    {"name":"Południca","aliases":["Połednica"],"type":"istota","domain":"pole/południe","traits":["południe","praca na polu","niebezpieczeństwo"],"status":"DO KWERENDY","source":"regionalny korpus demonologiczny"},
+    {"name":"Strzyga","aliases":["Strzygoń"],"type":"istota","domain":"śmierć","traits":["demoniczność","granica życia i śmierci"],"status":"DO KWERENDY","source":"regionalny korpus demonologiczny"},
+    {"name":"Świetla","aliases":["Świetlik"],"type":"istota","domain":"światło/noc","traits":["światło","noc","omamienie"],"status":"DO KWERENDY","source":"regionalny korpus demonologiczny"}
+  ],
+  "motifs":[
+    {"name":"zatopione podziemia","status":"ZAPIS LUDOWY","note":"woda + kopalnia + utracone bogactwo"},
+    {"name":"ukryty skarb","status":"ZAPIS LUDOWY","note":"kruszec i skarb jako obiekt poszukiwania"},
+    {"name":"próba charakteru","status":"ZAPIS LUDOWY","note":"uczciwość, skromność, pracowitość, szacunek do kopalni"},
+    {"name":"granica świata oswojonego","status":"INTERPRETACJA","note":"dom/las, ląd/woda, powierzchnia/podziemie, dzień/noc"},
+    {"name":"znak ochronny","status":"DO KWERENDY","note":"krzyżyki, karaktery i formuły magiczne związane z praktykami górniczymi"}
+  ],
+  "sources":[
+    {"author":"Elisabeth Grabowski","title":"Sagen und Märchen aus Oberschlesien","year":1922,"scope":"53 podania i baśnie, m.in. wodniki i opowieści górnicze; zbierane terenowo"},
+    {"author":"Dorota Simonides","title":"Baśń i podanie górnośląskie","year":1961,"scope":"definicje, transmisja, warianty i związki śląskiej prozy ludowej"},
+    {"author":"Ludwik Grabiński","title":"Die Sagen, der Aberglaube und abergläubische Sitten in Schlesien","year":1886,"scope":"podania, przesądy, zwyczaje i przepowiednie"},
+    {"author":"Walenty Roździeński","title":"Officina ferraria","year":1612,"scope":"górnictwo, hutnictwo, wierzenia i motyw Szarleja"},
+    {"author":"Michał Spurgiasz","title":"Górnośląska demonologia...","year":2025,"scope":"utopiec, diabeł, Skarbnik, bebok; synteza źródeł historycznych i etnograficznych"}
+  ],
+  "visual_sources":[
+    {"name":"Skarbnik — Polskie Radio Katowice","url":"https://www.radio.katowice.pl/zobacz,5297,Slaskie-opowiesci-Skarbnik.html"},
+    {"name":"Utopiec — Wisła wodna granica","url":"https://wislawodnagranica.pl/article/utoplec-demon-wodny-ze-slaskich-podan-ludowych/"},
+    {"name":"Skarbnik — Paweł Wróbel, 1982","url":"https://desa.art.pl/index.php?pozycja=20839"},
+    {"name":"Legenda o Skarbniku — Tibum","url":"https://www.tibum.pl/shop/produkt/legenda-o-skarbniku"}
+  ]
+}
