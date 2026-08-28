@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "city": "Katowice",
+  "locations": [
+    {
+      "id": "spodek-01",
+      "name": "Znak pod Spodkiem",
+      "lat": 50.2649,
+      "lng": 19.0238,
+      "radiusMeters": 80,
+      "agent": "hanys",
+      "chapter": "I",
+      "title": "Trzy uderzenia",
+      "story": "Skarbnik zostawił znak. Zanim ruszysz dalej, musisz odgadnąć, co oznaczały trzy uderzenia.",
+      "question": "Który trop prowadzi dalej?",
+      "answers": ["Światło", "Trzy uderzenia", "Czerwona kreda"],
+      "correct": 1,
+      "rewardXp": 100,
+      "scene": "scene-spodek-01"
+    },
+    {
+      "id": "nikiszowiec-01",
+      "name": "Ślad w familoku",
+      "lat": 50.2549,
+      "lng": 19.0807,
+      "radiusMeters": 100,
+      "agent": "skarbnik",
+      "chapter": "I",
+      "title": "Głos spod ziemi",
+      "story": "W starym domu ktoś słyszy pukanie. Nie otwieraj drzwi, dopóki nie poznasz właściwego rytmu.",
+      "question": "Ile uderzeń było pierwszym znakiem?",
+      "answers": ["Dwa", "Trzy", "Cztery"],
+      "correct": 1,
+      "rewardXp": 150,
+      "scene": "scene-nikiszowiec-01"
+    },
+    {
+      "id": "centrum-01",
+      "name": "Światło Latarnika",
+      "lat": 50.2597,
+      "lng": 19.0217,
+      "radiusMeters": 90,
+      "agent": "latarnik",
+      "chapter": "I",
+      "title": "Latarnia, która pamięta",
+      "story": "Latarnik mówi, że jedna z ulic pamięta historię, której nie zapisano w żadnej księdze.",
+      "question": "Czego szukasz najpierw?",
+      "answers": ["Światła", "Cienia", "Dźwięku"],
+      "correct": 0,
+      "rewardXp": 120,
+      "scene": "scene-centrum-01"
+    }
+  ]
+}
