@@ -23,6 +23,10 @@ GitHub przechowuje kod, prompty i pamięć. Duże checkpointy modeli uruchamiamy
 
 Uruchom `studio/scripts/bootstrap_gpu.sh` na Linux/NVIDIA/Colab-style runtime. Skrypt instaluje ComfyUI obok repo i tworzy katalogi modeli. Następnie `studio/scripts/run_comfy.sh` uruchamia ComfyUI.
 
+## NVIDIA API
+
+Możemy użyć NVIDIA NIM/API jako alternatywy dla lokalnego GPU. Klucz trzymaj wyłącznie jako zmienną środowiskową (`NVIDIA_API_KEY`) lub sekret środowiska. Nigdy nie zapisuj go w GitHub.
+
 ## Pierwszy odcinek
 
 **Odcinek 1 — Co wyczuł pies?**
@@ -30,6 +34,10 @@ Uruchom `studio/scripts/bootstrap_gpu.sh` na Linux/NVIDIA/Colab-style runtime. S
 Noc w Katowicach. Pies nagle wyczuwa coś pod starą ceglaną kamienicą. Cztery Beboki ruszają za jego tropem. W piwnicy odkrywają pierwszy ślad prowadzący do fragmentu Serca Śląska.
 
 Styl: filmowy, baśniowy Śląsk, mokry bruk, cegła, stare szyby i kopalniane konstrukcje, ciepłe latarnie, mgła, światło magiczne, komiksowe kadrowanie, spójna twarz/futro/ubiór kanonicznych Beboków.
+
+## Docelowa historia
+
+Psy wyczuwają ukryte fragmenty Serca Śląska. Beboki pomagają psom i wspólnie odnajdują kolejne fragmenty. Po złożeniu całego Serca następuje magiczna przemiana świata: powstaje utopijny, samowystarczalny Śląsk, w którym automatyzacja usuwa ciężką pracę, energia jest czysta i tania, a ludzie mają czas na życie, twórczość i pomaganie. Beboki otrzymują własną krainę „mlekiem i miodem płynącą”.
 
 ## Ważne
 
